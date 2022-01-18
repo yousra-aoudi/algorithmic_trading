@@ -1,8 +1,11 @@
 # var.py
 from __future__ import print_function
+
 import datetime
 import numpy as np
-import pandas.io.data as web from scipy.stats import norm
+import pandas.io.data as web 
+
+from scipy.stats import norm
 
 def var_cov_var(P, c, mu, sigma): 
   """
