@@ -188,7 +188,45 @@ class PortfolioHFT(object):
       order = OrderEvent(symbol, order_type, abs(cur_quantity), ’SELL’)
     if direction == ’EXIT’ and cur_quantity < 0:
       order = OrderEvent(symbol, order_type, abs(cur_quantity), ’BUY’)
+      
+    return order
   
-    self.equity_curve.to_csv(’equity.csv’) 
+  def update_signal(self, event): 
+    """
+    Acts on a SignalEvent to generate new orders
+    based on the portfolio logic. 
+    """
+    if event.type == ’SIGNAL’:
+      order_event = self.generate_naive_order(event) 
+      self.events.put(order_event)
+      
+  def create_equity_curve_dataframe(self): 
+    """
+    Creates a pandas DataFrame from the all_holdings
+    list of dictionaries.
+    """
+    curve = pd.DataFrame(self.all_holdings) 
+    curve.set_index(’datetime’, inplace=True) 
+    curve[’returns’] = curve[’total’].pct_change() 
+    curve[’equity_curve’] = (1.0+curve[’returns’]).cumprod() 
+    self.equity_curve = curve
     
+  def output_summary_stats(self):
+    """
+    Creates a list of summary statistics for the portfolio. 
+    """
+    total_return = self.equity_curve[’equity_curve’][-1] 
+    returns = self.equity_curve[’returns’]
+    pnl = self.equity_curve[’equity_curve’]
+    
+    sharpe_ratio = create_sharpe_ratio(returns, periods=252*60*6.5) 
+    drawdown, max_dd, dd_duration = create_drawdowns(pnl) 
+    self.equity_curve[’drawdown’] = drawdown
+    
+    stats = [("Total Return", "%0.2f%%" % \((total_return - 1.0) * 100.0)),
+             ("Sharpe Ratio", "%0.2f" % sharpe_ratio),
+             ("Max Drawdown", "%0.2f%%" % (max_dd * 100.0)),
+             ("Drawdown Duration", "%d" % dd_duration)]
+    
+    self.equity_curve.to_csv(’equity.csv’) 
     return stats
