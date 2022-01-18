@@ -12,8 +12,7 @@ except ImportError:
   import queue
 
   from event import FillEvent, OrderEvent
-  
-# execution.py
+
 class ExecutionHandler(object): 
   """
   The ExecutionHandler abstract class handles the interaction
@@ -34,7 +33,7 @@ class ExecutionHandler(object):
     """
     raise NotImplementedError("Should implement execute_order()")
     
- # execution.py
+ 
  class SimulatedExecutionHandler(ExecutionHandler): 
     """
     The simulated execution handler simply converts all order
