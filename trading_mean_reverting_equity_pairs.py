@@ -38,7 +38,7 @@ class IntradayOLSMRStrategy(Strategy):
     self.zscore_low = zscore_low
     self.zscore_high = zscore_high
     
-    self.pair = (’AREX’, ’WLL’)
+    self.pair = (’AAPL’, ’MSFT’)
     self.datetime = datetime.datetime.utcnow()
     
     self.long_market = False
@@ -127,7 +127,7 @@ class IntradayOLSMRStrategy(Strategy):
       self.calculate_signals_for_pairs()
       
 if __name__ == "__main__":
-  csv_dir = ’/path/csv/file’ # Path of the cvs / symbol_list = [’AREX’, ’WLL’]
+  csv_dir = ’/path/csv/file’ # Path of the cvs / symbol_list = [’AAPL’, ’MSFT’]
   initial_capital = 100000.0
   heartbeat = 0.0
   start_date = datetime.datetime(2007, 11, 8, 10, 41, 0)
