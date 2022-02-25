@@ -121,8 +121,8 @@ class PortfolioHFT(object):
     fill_dir = 0
     if fill.direction == ’BUY’:
       fill_dir = 1
-      if fill.direction == ’SELL’:
-        fill_dir = -1
+    if fill.direction == ’SELL’:
+      fill_dir = -1
     
     # Update positions list with new quantities
     self.current_positions[fill.symbol] += fill_dir*fill.quantity
