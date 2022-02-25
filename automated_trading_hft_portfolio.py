@@ -101,8 +101,8 @@ class PortfolioHFT(object):
     dh[’total’] = self.current_holdings[’cash’]
     
     for s in self.symbol_list:
-      # Approximation to the real value market_value = self.current_positions[s] * \
-      self.bars.get_latest_bar_value(s, "close") 
+      # Approximation to the real value 
+      market_value = self.current_positions[s] * self.bars.get_latest_bar_value(s, "close") 
       dh[s] = market_value
       dh[’total’] += market_value
 
